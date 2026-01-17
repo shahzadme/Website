@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TubeDigest - Transform YouTube Videos Into Learning Materials</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+  padding: 120px 20px;
+  text-align: center;
+}
+
+.hero-title {
+  color: #fff;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  color: #a0a0c0;
+  font-size: clamp(16px, 2vw, 20px);
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.video-form {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  gap: 10px;
+  background: rgba(255,255,255,0.05);
+  padding: 8px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+}
+
+.video-input {
+  flex: 1;
+  min-width: 250px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 15px 25px;
+  font-size: 16px;
+  outline: none;
+}
+
+.video-input::placeholder {
+  color: #888;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+  white-space: nowrap;
+}
+
+.submit-btn:hover {
+  transform: scale(1.05);
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  color: #667eea;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.stat-label {
+  color: #a0a0c0;
+  margin-top: 5px;
+}
+
+/* Features Section */
+.features-section {
+  background: #fff;
+  padding: 100px 20px;
+}
+
+.section-title {
+  text-align: center;
+  color: #1a1a3e;
+  font-size: clamp(32px, 4vw, 42px);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.feature-title {
+  color: #1a1a3e;
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.feature-desc {
+  color: #666;
+  line-height: 1.7;
+}
+
+/* How It Works Section */
+.how-section {
+  background: linear-gradient(180deg, #f7f8fc 0%, #ffffff 100%);
+  padding: 100px 20px;
+}
+
+.steps-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.step-number {
+  min-width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.step-content {
+  flex: 1;
+  padding-top: 10px;
+}
+
+.step-title {
+  color: #1a1a3e;
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.step-desc {
+  color: #666;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Pricing Section */
+.pricing-section {
+  background: #fff;
+  padding: 100px 20px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.pricing-card.featured {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  transform: scale(1.05);
+  box-shadow: 0 20px 60px rgba(102,126,234,0.4);
+}
+
+.badge {
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  background: #ffd700;
+  color: #1a1a3e;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.plan-name {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.plan-price {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.plan-price span {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+}
+
+.plan-features li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.plan-btn {
+  width: 100%;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.plan-btn:hover {
+  opacity: 0.9;
+}
+
+/* Footer Section */
+.footer-section {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+  padding: 80px 20px 40px;
+  color: white;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.cta-subtitle {
+  color: #a0a0c0;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.cta-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 18px 50px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+}
+
+.trust-badges {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 60px 0 40px;
+  flex-wrap: wrap;
+}
+
+.badge-item {
+  color: #a0a0c0;
+  font-size: 14px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 30px;
+  margin-top: 40px;
+  color: #666;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .step-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .pricing-card.featured {
+    transform: scale(1);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO SECTION -->
+<div class="hero-section">
+  <h1 class="hero-title">Transform YouTube Videos Into Learning Materials</h1>
+  <p class="hero-subtitle">Generate AI-powered summaries, quizzes, and flashcards from any YouTube video. Save hours with intelligent content analysis.</p>
+  
+  <form class="video-form" id="videoForm">
+    <input type="text" class="video-input" id="videoUrl" placeholder="Paste YouTube URL here..." required>
+    <button type="submit" class="submit-btn">Generate Summary</button>
+  </form>
+  
+  <div id="result" style="margin-top: 30px; display: none;"></div>
+  
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-number">1M+</div>
+      <div class="stat-label">Videos Summarized</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">50K+</div>
+      <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">10x</div>
+      <div class="stat-label">Faster Learning</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES SECTION -->
+<div class="features-section">
+  <h2 class="section-title">Powerful Features for Smart Learning</h2>
+  <p class="section-subtitle">Everything you need to transform video content into actionable learning materials</p>
+  
+  <div class="features-grid">
+    <div class="feature-card" style="background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-color: #667eea20;">
+      <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">📝</div>
+      <h3 class="feature-title">AI Summaries</h3>
+      <p class="feature-desc">Get concise, accurate summaries of any YouTube video in seconds. Extract key points and main ideas instantly.</p>
+    </div>
+    
+    <div class="feature-card" style="background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%); border-color: #f093fb20;">
+      <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">❓</div>
+      <h3 class="feature-title">Interactive Quizzes</h3>
+      <p class="feature-desc">Test your understanding with AI-generated quizzes based on video content. Perfect for students and professionals.</p>
+    </div>
+    
+    <div class="feature-card" style="background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%); border-color: #4facfe20;">
+      <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">🎴</div>
+      <h3 class="feature-title">Smart Flashcards</h3>
+      <p class="feature-desc">Create study flashcards automatically from video content. Enhance retention and ace your exams.</p>
+    </div>
+    
+    <div class="feature-card" style="background: linear-gradient(135deg, #fa709a15 0%, #fee14015 100%); border-color: #fa709a20;">
+      <div class="feature-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">⚡</div>
+      <h3 class="feature-title">Lightning Fast</h3>
+      <p class="feature-desc">Process videos in seconds with our optimized AI engine. Save hours of watching time.</p>
+    </div>
+    
+    <div class="feature-card" style="background: linear-gradient(135deg, #30cfd015 0%, #330fe715 100%); border-color: #30cfd020;">
+      <div class="feature-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330fe7 100%);">🌐</div>
+      <h3 class="feature-title">Multi-Language</h3>
+      <p class="feature-desc">Support for multiple languages. Translate and summarize content in your preferred language.</p>
+    </div>
+    
+    <div class="feature-card" style="background: linear-gradient(135deg, #a8edea15 0%, #fed6e315 100%); border-color: #a8edea20;">
+      <div class="feature-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">📥</div>
+      <h3 class="feature-title">Export Options</h3>
+      <p class="feature-desc">Export summaries as PDF, DOCX, or plain text. Share and save your study materials easily.</p>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS SECTION -->
+<div class="how-section">
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-subtitle">Transform any YouTube video into learning materials in 3 simple steps</p>
+  
+  <div class="steps-container">
+    <div class="step-item">
+      <div class="step-number" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">1</div>
+      <div class="step-content">
+        <h3 class="step-title">Paste Video URL</h3>
+        <p class="step-desc">Simply copy and paste any YouTube video URL into our platform. Works with videos of any length.</p>
+      </div>
+    </div>
+    
+    <div class="step-item">
+      <div class="step-number" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">2</div>
+      <div class="step-content">
+        <h3 class="step-title">AI Processing</h3>
+        <p class="step-desc">Our advanced AI analyzes the video content, extracts transcripts, and identifies key concepts and themes.</p>
+      </div>
+    </div>
+    
+    <div class="step-item">
+      <div class="step-number" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">3</div>
+      <div class="step-content">
+        <h3 class="step-title">Get Your Materials</h3>
+        <p class="step-desc">Receive comprehensive summaries, quizzes, and flashcards instantly. Download or share as needed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING SECTION -->
+<div class="pricing-section">
+  <h2 class="section-title">Choose Your Plan</h2>
+  <p class="section-subtitle">Start free and upgrade as you grow. No credit card required.</p>
+  
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3 class="plan-name" style="color: #1a1a3e;">Free</h3>
+      <div class="plan-price" style="color: #667eea;">$0<span>/month</span></div>
+      <ul class="plan-features">
+        <li style="color: #666;">✓ 3 summaries per day</li>
+        <li style="color: #666;">✓ Basic AI summaries</li>
+        <li style="color: #666;">✓ Text export</li>
+        <li style="color: #666;">✓ Email support</li>
+      </ul>
+      <button class="plan-btn" style="background: #f0f0f0; color: #1a1a3e;">Get Started Free</button>
+    </div>
+    
+    <div class="pricing-card featured">
+      <div class="badge">POPULAR</div>
+      <h3 class="plan-name" style="color: white;">Pro</h3>
+      <div class="plan-price" style="color: white;">$12<span>/month</span></div>
+      <ul class="plan-features">
+        <li style="color: white; border-color: rgba(255,255,255,0.2);">✓ Unlimited summaries</li>
+        <li style="color: white; border-color: rgba(255,255,255,0.2);">✓ Advanced AI analysis</li>
+        <li style="color: white; border-color: rgba(255,255,255,0.2);">✓ Quizzes & flashcards</li>
+        <li style="color: white; border-color: rgba(255,255,255,0.2);">✓ PDF, DOCX export</li>
+        <li style="color: white; border-color: rgba(255,255,255,0.2);">✓ Priority support</li>
+      </ul>
+      <button class="plan-btn" style="background: white; color: #667eea;">Start Pro Trial</button>
+    </div>
+    
+    <div class="pricing-card">
+      <h3 class="plan-name" style="color: #1a1a3e;">Enterprise</h3>
+      <div class="plan-price" style="color: #667eea;">Custom</div>
+      <ul class="plan-features">
+        <li style="color: #666;">✓ Everything in Pro</li>
+        <li style="color: #666;">✓ API access</li>
+        <li style="color: #666;">✓ Team collaboration</li>
+        <li style="color: #666;">✓ Custom integrations</li>
+        <li style="color: #666;">✓ Dedicated support</li>
+      </ul>
+      <button class="plan-btn" style="background: #667eea; color: white;">Contact Sales</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER/CTA SECTION -->
+<div class="footer-section">
+  <h2 class="cta-title">Ready to Transform Your Learning?</h2>
+  <p class="cta-subtitle">Join thousands of students and professionals who are learning smarter with TubeDigest</p>
+  <a href="#" class="cta-btn">Get Started for Free</a>
+  
+  <div class="trust-badges">
+    <div class="badge-item">✓ No Credit Card Required</div>
+    <div class="badge-item">✓ Free Forever Plan</div>
+    <div class="badge-item">✓ Cancel Anytime</div>
+  </div>
+  
+  <div class="footer-bottom">
+    © 2026 TubeDigest. All rights reserved.
+  </div>
+</div>
+
+<script>
+document.getElementById('videoForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const url = document.getElementById('videoUrl').value;
+  const resultDiv = document.getElementById('result');
+  
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = `
+    <div style="text-align: center; padding: 20px;">
+      <div style="border: 4px solid #667eea; border-top: 4px solid transparent; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+      <p style="margin-top: 15px; color: #fff;">Analyzing video...</p>
+    </div>
+  `;
+  
+  setTimeout(() => {
+    resultDiv.innerHTML = `
+      <div style="background: rgba(255,255,255,0.08); padding: 30px; border-radius: 15px; max-width: 600px; margin: 0 auto; backdrop-filter: blur(10px);">
+        <h3 style="color: #667eea; margin-bottom: 15px;">✓ Summary Generated Successfully!</h3>
+        <p style="color: #d0d0d0; line-height: 1.8;">Your video has been processed. The AI has extracted key points, created a comprehensive summary, and generated study materials.</p>
+        <button onclick="alert('This is a demo. Integrate with your backend!')" style="background: #667eea; color: white; border: none; padding: 12px 30px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-weight: 600;">View Summary</button>
+      </div>
+    `;
+  }, 2000);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
